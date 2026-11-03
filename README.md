@@ -1,52 +1,51 @@
-# Flutter Product Catalog
+# Product Search
 
-A simple, responsive e-commerce product catalog built with Flutter. Browse a
-grid of sample products with descriptions, prices in Indian rupees, and
-category icons.
+A small Flutter app for searching a built-in list of fruits. Enter part or all
+of a fruit name to filter the results as you type.
 
 ## Features
 
-- Responsive product grid: 2 columns on narrow screens, 3 on medium screens,
-  and 4 on wide screens.
-- Reusable product cards with an icon, name, description, price, and an
-  **Add to Cart** button.
-- Material 3 styling.
+- Search the fruit list by name.
+- Update results immediately while typing.
+- Clear the search field with the clear button.
+- Show a friendly message when no products match.
+- Scroll through the matching results.
 
-> The **Add to Cart** button is currently a visual placeholder; it does not
-> add products to a cart.
+## Fruit list
+
+The app currently includes:
+
+Apple, Banana, Mango, Orange, Grapes, Pineapple, Watermelon, Strawberry,
+Papaya, and Guava.
 
 ## Requirements
 
-- Flutter SDK with Dart **3.13.7 or later within the supported SDK range**
-  (`pubspec.yaml` specifies `^3.13.7`).
-- A configured target device, emulator, or browser.
+- Flutter SDK installed and configured.
+- A connected device, emulator, or supported desktop/browser target.
 
-Check your Flutter installation with:
+Check your environment with:
 
 ```bash
 flutter doctor
 ```
 
-## Run locally
+## Run the app
 
-Clone or download this project, open a terminal in the project directory, and
-run:
+From the project directory, install dependencies and start the app:
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-To select a specific connected device:
+To choose a target device:
 
 ```bash
 flutter devices
 flutter run -d <device-id>
 ```
 
-## Verify
-
-Run the automated tests and static analysis with:
+## Test and analyze
 
 ```bash
 flutter test
@@ -55,29 +54,27 @@ flutter analyze
 
 ## Build
 
-Build for a platform supported by your Flutter installation:
+For example, build an Android APK or a web release:
 
 ```bash
 flutter build apk
 flutter build web
-flutter build windows
 ```
 
-Windows builds require the Windows desktop toolchain; other platforms may
-require additional SDKs and setup. See the [Flutter deployment
-documentation](https://docs.flutter.dev/deployment) for platform-specific
-instructions.
+Other targets may be available depending on your Flutter installation and
+platform-specific toolchains. See the [Flutter deployment
+guide](https://docs.flutter.dev/deployment) for details.
 
 ## Project structure
 
 ```text
 lib/
-  main.dart             App entry point, product data, and catalog UI
+  main.dart             App entry point and product search interface
 test/
-  widget_test.dart      Widget test for the product catalog
+  widget_test.dart      Widget tests
 assets/
-  images/               Project image assets
+  images/               Image assets configured for Flutter
 ```
 
-The sample catalog data and UI are defined in `lib/main.dart`. Update the
-`ProductCatalog.products` list to change the displayed products.
+The fruit names are stored in the `products` list in `lib/main.dart`. Edit
+that list to change the available search results.

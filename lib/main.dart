@@ -4,6 +4,22 @@ void main() {
   runApp(const MyApp());
 }
 
+// Product Model
+class Product {
+  final String name;
+  final String price;
+  final String description;
+  final IconData icon;
+
+  const Product({
+    required this.name,
+    required this.price,
+    required this.description,
+    required this.icon,
+  });
+}
+
+// Main Application
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -11,129 +27,182 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Fruit List',
+      title: 'E-Commerce Catalog',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+        useMaterial3: true,
       ),
-      home: const FruitHomePage(),
+      home: const ProductCatalog(),
     );
   }
 }
 
-class FruitHomePage extends StatelessWidget {
-  const FruitHomePage({super.key});
+// Product Catalog Page
+class ProductCatalog extends StatelessWidget {
+  const ProductCatalog({super.key});
+
+  static const List<Product> products = [
+    Product(
+      name: 'Smartphone',
+      price: '₹25,999',
+      description: 'Latest smartphone with powerful performance.',
+      icon: Icons.smartphone,
+    ),
+    Product(
+      name: 'Laptop',
+      price: '₹59,999',
+      description: 'Powerful laptop for work and study.',
+      icon: Icons.laptop,
+    ),
+    Product(
+      name: 'Headphones',
+      price: '₹2,499',
+      description: 'Wireless headphones with clear sound.',
+      icon: Icons.headphones,
+    ),
+    Product(
+      name: 'Smart Watch',
+      price: '₹4,999',
+      description: 'Smart watch with fitness tracking.',
+      icon: Icons.watch,
+    ),
+    Product(
+      name: 'Camera',
+      price: '₹45,999',
+      description: 'High-quality digital camera.',
+      icon: Icons.camera_alt,
+    ),
+    Product(
+      name: 'Tablet',
+      price: '₹19,999',
+      description: 'Portable tablet for entertainment.',
+      icon: Icons.tablet,
+    ),
+    Product(
+      name: 'Keyboard',
+      price: '₹1,999',
+      description: 'Comfortable keyboard for everyday use.',
+      icon: Icons.keyboard,
+    ),
+    Product(
+      name: 'Mouse',
+      price: '₹999',
+      description: 'Wireless mouse with ergonomic design.',
+      icon: Icons.mouse,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Fruit Market',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          'E-Commerce Product Catalog',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(10),
-        children: const [
-          FruitItem(
-            fruitName: 'Apple',
-            price: '₹180/kg',
-            description: 'Fresh Red Apple',
-            image: 'assets/images/apple.jpeg',
-          ),
-          FruitItem(
-            fruitName: 'Banana',
-            price: '₹60/dozen',
-            description: 'Fresh Yellow Banana',
-            image: 'assets/images/banana.jpeg',
-          ),
-          FruitItem(
-            fruitName: 'Mango',
-            price: '₹120/kg',
-            description: 'Fresh and Juicy Mango',
-            image: 'assets/images/mango.jpeg',
-          ),
-          FruitItem(
-            fruitName: 'Orange',
-            price: '₹80/kg',
-            description: 'Fresh Sweet Orange',
-            image: 'assets/images/orange.jpeg',
-          ),
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          int columns;
+          // Responsive layout breakdown
+          if (constraints.maxWidth < 600) {
+            columns = 2; // Mobile
+          } else if (constraints.maxWidth < 900) {
+            columns = 3; // Tablet
+          } else {
+            columns = 4; // Desktop
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: GridView.builder(
+              itemCount: products.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.75,
+              ),
+              itemBuilder: (context, index) {
+                return ProductCard(product: products[index]);
+              },
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class FruitItem extends StatelessWidget {
-  final String fruitName;
-  final String price;
-  final String description;
-  final String image;
+// Reusable Product Widget
+class ProductCard extends StatelessWidget {
+  final Product product;
 
-  const FruitItem({
+  const ProductCard({
     super.key,
-    required this.fruitName,
-    required this.price,
-    required this.description,
-    required this.image,
+    required this.product,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Container(
+      elevation: 4,
+      child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                image,
-                width: 90,
-                height: 90,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 15),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    fruitName,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  product.icon,
+                  size: 70,
+                  color: Colors.deepPurple,
+                ),
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              size: 18,
+            const SizedBox(height: 10),
+            Text(
+              product.name,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              product.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey.shade700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              product.price,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Add to Cart'),
+              ),
             ),
           ],
         ),
